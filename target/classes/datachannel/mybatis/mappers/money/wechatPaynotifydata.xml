@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.mosai.vliveshow.datachannel.domain.money.WechatPayNotifyData">
+    
+    <resultMap type="WechatPayNotifyData" id="wechatPayNotifyData">
+        <id column="id" property="id"/>
+        <result column="result_code" property="result_code"/>
+        <result column="err_code" property="err_code"/>
+        <result column="err_code_des" property="err_code_des"/>
+        <result column="openid" property="openid"/>
+        <result column="trade_state" property="trade_state"/>
+        <result column="bank_type" property="bank_type"/>
+        <result column="total_fee" property="total_fee"/>
+        <result column="cash_fee" property="cash_fee"/>
+        <result column="transaction_id" property="transaction_id"/>
+        <result column="out_trade_no" property="out_trade_no"/>
+        <result column="time_end" property="time_end"/>
+        <result column="trade_state_desc" property="trade_state_desc"/>
+    </resultMap>
+    
+    <sql id="commonSelect">
+        select id as id,
+            result_code,
+            err_code,
+            err_code_des,
+            openid,
+            trade_state,
+            bank_type,
+            total_fee,
+            cash_fee,
+            transaction_id,
+            out_trade_no,
+            time_end,
+            trade_state_desc
+        from "t_wechat_notify_data" data
+    </sql>
+    
+    <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="WechatPayNotifyData">
+    	insert into "t_wechat_notify_data"(result_code, err_code, err_code_des, openid, trade_state, bank_type, total_fee, cash_fee, transaction_id, out_trade_no, time_end, trade_state_desc)
+    	           values (#{result_code}, #{err_code}, #{err_code_des}, #{openid}, #{trade_state}, #{bank_type}, #{total_fee}, #{cash_fee}, #{transaction_id}, #{out_trade_no}, #{time_end}, #{trade_state_desc})
+    </insert>
+
+    <insert id="saveOrUpdate" parameterType="WechatPayNotifyData" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        <selectKey keyProperty="count" resultType="int" order="BEFORE">
+            SELECT COUNT(1) FROM t_wechat_notify_data WHERE out_trade_no = #{out_trade_no}
+        </selectKey>
+        <if test="count > 0">
+            update t_wechat_notify_data
+            <set >
+                <if test="result_code != null" >
+                    result_code = #{result_code,jdbcType=VARCHAR},
+                </if>
+                <if test="err_code != null" >
+                    err_code = #{err_code,jdbcType=VARCHAR},
+                </if>
+                <if test="err_code_des != null" >
+                    err_code_des = #{err_code_des,jdbcType=VARCHAR},
+                </if>
+                <if test="openid != null" >
+                    openid = #{openid,jdbcType=VARCHAR},
+                </if>
+                <if test="trade_state != null" >
+                    trade_state = #{trade_state,jdbcType=VARCHAR},
+                </if>
+                <if test="bank_type != null" >
+                    bank_type = #{bank_type,jdbcType=VARCHAR},
+                </if>
+                <if test="total_fee != null" >
+                    total_fee = #{total_fee,jdbcType=INTEGER},
+                </if>
+                <if test="cash_fee != null" >
+                    cash_fee = #{cash_fee,jdbcType=INTEGER},
+                </if>
+                <if test="transaction_id != null" >
+                    transaction_id = #{transaction_id,jdbcType=VARCHAR},
+                </if>
+                <if test="time_end != null" >
+                    time_end = #{time_end,jdbcType=VARCHAR},
+                </if>
+                <if test="trade_state_desc != null" >
+                    trade_state_desc = #{trade_state_desc,jdbcType=VARCHAR},
+                </if>
+            </set>
+            where out_trade_no = #{out_trade_no,jdbcType=VARCHAR}
+        </if>
+        <if test="count == 0">
+
+            insert into t_wechat_notify_data
+            <trim prefix="(" suffix=")" suffixOverrides="," >
+                <if test="id != null" >
+                    id,
+                </if>
+                <if test="result_code != null" >
+                    result_code,
+                </if>
+                <if test="err_code != null" >
+                    err_code,
+                </if>
+                <if test="err_code_des != null" >
+                    err_code_des,
+                </if>
+                <if test="openid != null" >
+                    openid,
+                </if>
+                <if test="trade_state != null" >
+                    trade_state,
+                </if>
+                <if test="bank_type != null" >
+                    bank_type,
+                </if>
+                <if test="total_fee != null" >
+                    total_fee,
+                </if>
+                <if test="cash_fee != null" >
+                    cash_fee,
+                </if>
+                <if test="transaction_id != null" >
+                    transaction_id,
+                </if>
+                <if test="out_trade_no != null" >
+                    out_trade_no,
+                </if>
+                <if test="time_end != null" >
+                    time_end,
+                </if>
+                <if test="trade_state_desc != null" >
+                    trade_state_desc,
+                </if>
+            </trim>
+            <trim prefix="values (" suffix=")" suffixOverrides="," >
+                <if test="id != null" >
+                    #{id,jdbcType=INTEGER},
+                </if>
+                <if test="result_code != null" >
+                    #{result_code,jdbcType=VARCHAR},
+                </if>
+                <if test="err_code != null" >
+                    #{err_code,jdbcType=VARCHAR},
+                </if>
+                <if test="err_code_des != null" >
+                    #{err_code_des,jdbcType=VARCHAR},
+                </if>
+                <if test="openid != null" >
+                    #{openid,jdbcType=VARCHAR},
+                </if>
+                <if test="trade_state != null" >
+                    #{trade_state,jdbcType=VARCHAR},
+                </if>
+                <if test="bank_type != null" >
+                    #{bank_type,jdbcType=VARCHAR},
+                </if>
+                <if test="total_fee != null" >
+                    #{total_fee,jdbcType=INTEGER},
+                </if>
+                <if test="cash_fee != null" >
+                    #{cash_fee,jdbcType=INTEGER},
+                </if>
+                <if test="transaction_id != null" >
+                    #{transaction_id,jdbcType=VARCHAR},
+                </if>
+                <if test="out_trade_no != null" >
+                    #{out_trade_no,jdbcType=VARCHAR},
+                </if>
+                <if test="time_end != null" >
+                    #{time_end,jdbcType=VARCHAR},
+                </if>
+                <if test="trade_state_desc != null" >
+                    #{trade_state_desc,jdbcType=VARCHAR},
+                </if>
+            </trim>
+        </if>
+
+    </insert>
+    
+</mapper>

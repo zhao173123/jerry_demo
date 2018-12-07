@@ -1,0 +1,6 @@
+Map的类系中使用比较多的就是HashMap和TreeMap，
+两者的线程安全类分别为ConcurrentHashMap和ConcurrentSkipListMap。
+而Hashtable继承自Dictionary，并不继承AbstractMap和HashMap，
+所以尽管Hashtable和HashMap的结构非常相似，但是其实并无多大关系。
+Hashtable已经过时了，因此应该尽量使用ConcurrentHashMap和ConcurrentSkipListMap。
+

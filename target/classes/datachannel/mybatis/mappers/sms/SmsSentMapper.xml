@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mosai.vliveshow.datachannel.repository.sms.SmsSentMapper" >
+  <resultMap id="BaseResultMap" type="com.mosai.vliveshow.datachannel.domain.sms.SmsSent" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="nationcode" property="nationcode" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="errmsg" property="errmsg" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="activity_id" property="activityId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, nationcode, phone, status, errmsg, create_time, update_time, activity_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sms_sent
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectByCdt" resultMap="BaseResultMap" parameterType="com.mosai.vliveshow.datachannel.domain.sms.SmsSent" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sms_sent
+    <where >
+      <if test="nationcode != null" >
+        and nationcode = #{nationcode,jdbcType=VARCHAR}
+      </if>
+      <if test="phone != null" >
+        and phone = #{phone,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null" >
+        and status = #{status,jdbcType=INTEGER}
+      </if>
+      <if test="errmsg != null" >
+        and errmsg = #{errmsg,jdbcType=VARCHAR}
+      </if>
+      <if test="createTime != null" >
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        and update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="activityId != null" >
+        and activity_id = #{activityId,jdbcType=BIGINT}
+      </if>
+    </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_sms_sent
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.mosai.vliveshow.datachannel.domain.sms.SmsSent" >
+    insert into t_sms_sent (id, nationcode, phone, 
+      status, errmsg, create_time, 
+      update_time, activity_id)
+    values (#{id,jdbcType=BIGINT}, #{nationcode,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{errmsg,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{activityId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mosai.vliveshow.datachannel.domain.sms.SmsSent" >
+    insert into t_sms_sent
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="nationcode != null" >
+        nationcode,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="errmsg != null" >
+        errmsg,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="activityId != null" >
+        activity_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="nationcode != null" >
+        #{nationcode,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="errmsg != null" >
+        #{errmsg,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityId != null" >
+        #{activityId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mosai.vliveshow.datachannel.domain.sms.SmsSent" >
+    update t_sms_sent
+    <set >
+      <if test="nationcode != null" >
+        nationcode = #{nationcode,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="errmsg != null" >
+        errmsg = #{errmsg,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityId != null" >
+        activity_id = #{activityId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mosai.vliveshow.datachannel.domain.sms.SmsSent" >
+    update t_sms_sent
+    set nationcode = #{nationcode,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      errmsg = #{errmsg,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      activity_id = #{activityId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+    <update id="update" parameterType="com.mosai.vliveshow.datachannel.domain.sms.SmsSent" >
+    update t_sms_sent
+    set status = #{status,jdbcType=INTEGER},
+      errmsg = #{errmsg,jdbcType=VARCHAR}
+    where activity_id = #{activityId,jdbcType=BIGINT} and phone = #{phone,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="sendResult" resultType="java.util.HashMap" parameterType="java.lang.Long" >
+    SELECT a.successCount,
+	sa.activity_name as "activityName",
+	COUNT (ss. ID) as totalCount
+	FROM
+		t_sms_sent ss,
+		t_sms_activity sa,
+	(select #{activityId,jdbcType=BIGINT} as activity_id ,
+	 count(id) as successCount from t_sms_sent  where status = 1 
+	 and activity_id=#{activityId,jdbcType=BIGINT}) a
+	WHERE
+		ss.activity_id = sa. ID
+	and ss.activity_id=#{activityId,jdbcType=BIGINT} and a.activity_id = ss.activity_id
+	GROUP BY
+	sa.id,a.successCount
+  </select>
+</mapper>

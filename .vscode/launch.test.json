@@ -1,0 +1,30 @@
+{
+    "run": {
+        "default": "",
+        "items": [
+            {
+                "name": "jerry_test",
+                "projectName": "jerry_test",
+                "workingDirectory": "/Users/jerry/myself/github/jerry_test",
+                "args": [],
+                "vmargs": [],
+                "env": {},
+                "preLaunchTask": ""
+            }
+        ]
+    },
+    "debug": {
+        "default": "",
+        "items": [
+            {
+                "name": "jerry_test",
+                "projectName": "jerry_test",
+                "workingDirectory": "/Users/jerry/myself/github/jerry_test",
+                "args": [],
+                "vmargs": [],
+                "env": {},
+                "preLaunchTask": ""
+            }
+        ]
+    }
+}

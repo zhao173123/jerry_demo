@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.mosai.vliveshow.datachannel.domain.money.TransactionDiamond">
+    
+    <resultMap type="TransactionDiamond" id="transactionDiamondMap">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="trans_status" property="transStatus"/>
+        <result column="trans_type" property="transType"/>
+        <result column="trans_method" property="transMethod"/>
+        <result column="transaction_no" property="transactionNo"/>
+        <result column="total_amount" property="totalAmount"/>
+        <result column="amount" property="amount"/>
+        <result column="fee" property="fee"/>
+        <result column="fee_rate" property="feeRate"/>
+        <result column="diamond" property="diamond"/>
+        <result column="balance_diamond" property="balanceDiamond"/>
+        <result column="room_id" property="roomId"/>
+        <result column="recharge_id" property="rechargeId"/>
+        <result column="remark" property="remark"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+    
+    <sql id="commonSelect">
+        select id as id,
+               user_id as user_id,
+        	   trans_status as trans_status,
+        	   trans_type as trans_type,
+        	   trans_method as trans_method,
+        	   transaction_no as transaction_no,
+        	   total_amount as total_amount,
+        	   amount as amount,
+        	   fee as fee,
+        	   fee_rate as fee_rate,
+        	   diamond as diamond,
+        	   balance_diamond as balance_diamond,
+        	   room_id as room_id,
+        	   recharge_id as recharge_id,
+        	   remark as remark,
+        	   create_time as create_time
+        from "t_transaction_diamond" t
+    </sql>
+    
+    <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="TransactionDiamond">
+    	insert into "t_transaction_diamond"(user_id,trans_status,trans_type,trans_method,transaction_no,total_amount,amount,fee,fee_rate,diamond,balance_diamond,room_id,recharge_id,remark,create_time) 
+    	           values (#{userId},#{transStatus},#{transType},#{transMethod},#{transactionNo},#{totalAmount},#{amount},#{fee},#{feeRate},#{diamond},#{balanceDiamond},#{roomId},#{rechargeId},#{remark},#{createTime})
+    </insert>
+    
+    <select id="getById" resultMap="transactionDiamondMap">
+        <include refid="commonSelect"/>
+        where id=#{id}
+    </select>
+    
+    <select id="queryPageTransaction" resultMap="transactionDiamondMap">
+        <include refid="commonSelect"/>
+        <where>
+             <if test="params.userId != null and params.userId != ''">
+                 user_id=#{params.userId}
+             </if>
+             <if test="params.transType != null and params.transType != ''">
+                 <![CDATA[and trans_type=#{params.transType}]]>
+             </if>
+         </where>
+         <if test="sorts.keys.size() > 0">
+         	 order by
+             <foreach collection="sorts.keys" item="key" separator=",">
+             	${key} ${sorts[key]}
+             </foreach>
+         </if>
+    </select>
+    
+    <select id="checkDuplicateTransaction" resultType="_int">
+    	select count(1) from t_transaction_diamond
+    	<where>
+            transaction_no=#{transactionNo} and trans_method=#{transMethod} and trans_status=#{transStatus}
+         </where>
+    </select>
+    <select id="querySumDiamond" resultType="_int">
+    	select sum(diamond) from t_transaction_diamond
+    	<where>
+            trans_type=#{transType} and trans_status=#{transStatus} and user_id=#{userId}
+        </where> 
+    </select>
+</mapper>

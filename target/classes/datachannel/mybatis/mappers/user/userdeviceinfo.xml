@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.mosai.vliveshow.datachannel.domain.user.UserDeviceInfo">
+    
+    <resultMap type="UserDeviceInfo" id="userDeviceInfoMap">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="owner" property="owner"/>
+        <result column="model" property="model"/>
+        <result column="localized_model" property="localizedModel"/>
+        <result column="system_name" property="systemName"/>        
+        <result column="system_version" property="systemVersion"/>
+        <result column="uuid" property="uuid"/>
+        <result column="random_uuid" property="randomUUID"/>
+        <result column="screen" property="screen"/>
+        <result column="screen_width" property="screenWidth"/>
+        <result column="screen_height" property="screenHeight"/>
+        <result column="carrier_name" property="carrierName"/>
+        <result column="radio_access_technology" property="radioAccessTechnology"/>
+        <result column="mac" property="mac"/>
+        <result column="idfa" property="idfa"/>
+        <result column="update_time" property="updateDate"/>
+        <result column="create_time" property="createDate"/>
+    </resultMap>
+    
+    <sql id="commonSelect">
+        select id as id,
+        	   user_id as user_id,
+               owner as owner,
+        	   model as model,
+        	   localized_model as localized_model,
+        	   system_name as system_name,
+        	   system_version as system_version,
+        	   uuid as uuid,
+        	   random_uuid as random_uuid,
+        	   screen as screen,
+        	   screen_width as screen_width,
+        	   screen_height as screen_height,
+        	   carrier_name as carrier_name,
+        	   radio_access_technology as radio_access_technology,
+        	   mac as mac,
+        	   idfa as idfa,
+        	   update_time as update_time,
+        	   create_time as create_time
+        from "user_device_info" u
+    </sql>
+    
+    <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="UserDeviceInfo">
+    	insert into "user_device_info"(user_id,owner,model,localized_model,system_name,system_version,uuid,random_uuid,screen,screen_width,screen_height,carrier_name,radio_access_technology,mac,idfa,update_time,create_time) 
+    	           values (#{userId},#{owner},#{model},#{localizedModel},#{systemName},#{systemVersion},#{uuid},#{randomUUID},#{screen},#{screenWidth},#{screenHeight},#{carrierName},#{radioAccessTechnology},#{mac},#{idfa},#{updateDate},#{createDate})
+    </insert>
+    
+    <select id="getById" resultMap="userDeviceInfoMap">
+        <include refid="commonSelect"/>
+        where id=#{id}
+    </select>
+
+    <select id="getByUserId" resultMap="userDeviceInfoMap">
+        <include refid="commonSelect"/>
+        where user_id=#{userId}
+    </select>
+    
+    <update id="update" parameterType="UserDeviceInfo">
+        update "user_device_info"
+        <set>
+            <if test="owner != null">
+                owner = #{owner},
+            </if>
+            <if test="model != null">
+                model = #{model},
+            </if>
+            <if test="localizedModel != null">
+                localized_model = #{localizedModel},
+            </if>
+            <if test="systemName != null">
+                system_name = #{systemName},
+            </if>
+            <if test="systemVersion != null">
+                system_version = #{systemVersion},
+            </if>
+            <if test="uuid != null">
+                uuid = #{uuid},
+            </if>
+            <if test="randomUUID != null">
+                random_uuid = #{randomUUID},
+            </if>
+            <if test="screen != null">
+                screen = #{screen},
+            </if>
+            <if test="screenWidth != null">
+                screen_width = #{screenWidth},
+            </if>
+            <if test="screenHeight != null">
+                screen_height = #{screenHeight},
+            </if>
+            <if test="carrierName != null">
+                carrier_name = #{carrierName},
+            </if>
+            <if test="radioAccessTechnology != null">
+                radio_access_technology = #{radioAccessTechnology},
+            </if>
+            <if test="mac != null">
+                mac = #{mac},
+            </if>
+            <if test="idfa != null">
+                idfa = #{idfa},
+            </if>            
+            <if test="updateDate != null">
+                update_time = #{updateDate},
+            </if>
+        </set>
+        <where>
+            user_id=#{userId}
+        </where>
+    </update>
+    
+</mapper>

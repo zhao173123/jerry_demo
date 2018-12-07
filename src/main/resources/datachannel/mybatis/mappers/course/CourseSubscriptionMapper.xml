@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mosai.vliveshow.datachannel.repository.course.CourseSubscriptionMapper" >
+  <resultMap id="BaseResultMap" type="com.mosai.vliveshow.datachannel.domain.course.CourseSubscription" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="course_id" property="courseId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="subscription_type" property="subscriptionType" jdbcType="INTEGER" />
+    <result column="price" property="price" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="is_deleted" property="isDeleted" jdbcType="BIT" />
+    <result column="is_refunded" property="isRefunded" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, course_id, user_id, subscription_type, price, create_time, update_time, is_deleted, 
+    is_refunded
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_course_subscription
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="queryPageSubscriberAndLanguage" resultType="java.util.HashMap" >
+  	select 
+		#{params.host} user_id, 
+		tcs.user_id fans_id, ud.localized_model "language"
+	from t_course_subscription tcs LEFT JOIN user_device_info ud on tcs.user_id = ud.user_id          
+	where 
+		tcs.course_id=#{params.courseId}
+		and tcs.is_deleted = false
+		and tcs.is_refunded = false
+  </select>
+  <select id="selectByCdt" resultMap="BaseResultMap" parameterType="com.mosai.vliveshow.datachannel.domain.course.CourseSubscription" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_course_subscription
+    <where >
+      <if test="courseId != null" >
+        and course_id = #{courseId,jdbcType=INTEGER}
+      </if>
+      <if test="userId != null" >
+        and user_id = #{userId,jdbcType=BIGINT}
+      </if>
+      <if test="subscriptionType != null" >
+        and subscription_type = #{subscriptionType,jdbcType=INTEGER}
+      </if>
+      <if test="price != null" >
+        and price = #{price,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null" >
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        and update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="isDeleted != null" >
+        and is_deleted = #{isDeleted,jdbcType=BIT}
+      </if>
+      <if test="isRefunded != null" >
+        and is_refunded = #{isRefunded,jdbcType=BIT}
+      </if>
+    </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_course_subscription
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mosai.vliveshow.datachannel.domain.course.CourseSubscription" >
+    insert into t_course_subscription (id, course_id, user_id, 
+      subscription_type, price, create_time, 
+      update_time, is_deleted, is_refunded
+      )
+    values (#{id,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, 
+      #{subscriptionType,jdbcType=INTEGER}, #{price,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=BIT}, #{isRefunded,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mosai.vliveshow.datachannel.domain.course.CourseSubscription" >
+    insert into t_course_subscription
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="courseId != null" >
+        course_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="subscriptionType != null" >
+        subscription_type,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted,
+      </if>
+      <if test="isRefunded != null" >
+        is_refunded,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null" >
+        #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="subscriptionType != null" >
+        #{subscriptionType,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="isRefunded != null" >
+        #{isRefunded,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mosai.vliveshow.datachannel.domain.course.CourseSubscription" >
+    update t_course_subscription
+    <set >
+      <if test="courseId != null" >
+        course_id = #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="subscriptionType != null" >
+        subscription_type = #{subscriptionType,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="isRefunded != null" >
+        is_refunded = #{isRefunded,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mosai.vliveshow.datachannel.domain.course.CourseSubscription" >
+    update t_course_subscription
+    set course_id = #{courseId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=BIGINT},
+      subscription_type = #{subscriptionType,jdbcType=INTEGER},
+      price = #{price,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=BIT},
+      is_refunded = #{isRefunded,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="statisticCourseSale" resultType="java.util.Map" parameterType="java.lang.Integer">
+    SELECT cs.is_refunded,
+        count(CASE cs.subscription_type WHEN '0' THEN cs.id END) AS audience,
+        count(CASE cs.subscription_type WHEN '1' THEN cs.id END) AS participant
+     FROM t_course_subscription cs WHERE course_id = #{courseId,jdbcType=INTEGER} GROUP BY is_refunded
+  </select>
+  
+  <select id="getSubscriptionInfo" resultType="java.util.Map" parameterType="java.lang.Integer">
+   SELECT CASE cs.subscription_type WHEN '0' THEN '围观' WHEN '1' THEN '嘉宾'END as "subscriptionType",
+	   cs.user_id as "userId",u.mobile_phone ,u.phone_encrypt,
+	   CASE cs.is_refunded WHEN FALSE THEN '已购买' WHEN TRUE THEN '已退款'END  as "refundType"
+    FROM t_course_subscription cs JOIN "user" u on cs.user_id = u.id
+       WHERE course_id = #{courseId,jdbcType=INTEGER}
+       <if test="flag == 1">
+        	and cs.is_refunded = false
+       </if>
+        <if test="flag == 2">
+        	and cs.is_refunded = true
+       </if>
+  </select>
+</mapper>

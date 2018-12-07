@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.mosai.vliveshow.datachannel.domain.money.UserBalance">
+    
+    <resultMap type="UserBalance" id="userBalanceMap">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="earning" property="earning"/>
+        <result column="diamond" property="diamond"/>
+        <result column="frozen_earning" property="frozenEarning"/>
+        <result column="total_earning" property="totalEarning"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+    
+    <sql id="commonSelect">
+        select id as id,
+               user_id as user_id,
+        	   earning as earning,
+        	   diamond as diamond,
+        	   frozen_earning as frozen_earning,
+        	   total_earning as total_earning,
+        	   update_time as update_time,
+        	   create_time as create_time
+        from "t_user_balance" p
+    </sql>
+    
+    <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="UserBalance">
+    	insert into "t_user_balance"(user_id,earning,diamond,frozen_earning,total_earning,update_time,create_time) 
+    	           values (#{userId},#{earning},#{diamond},#{frozenEarning},#{totalEarning},#{updateTime},#{createTime})
+    </insert>
+    
+    <select id="getById" resultMap="userBalanceMap">
+        <include refid="commonSelect"/>
+        where id=#{id}
+    </select>
+
+    <select id="getByUserId" resultMap="userBalanceMap">
+        <include refid="commonSelect"/>
+        where user_id=#{userId}
+    </select>
+    
+    <update id="update" parameterType="UserBalance">
+        update "t_user_balance"
+        <set>
+            <if test="earning != null">
+                earning = #{earning},
+            </if>
+            <if test="diamond != null">
+                diamond = #{diamond},
+            </if>
+            <if test="frozenEarning != null">
+                frozen_earning = #{frozenEarning},
+            </if>
+            <if test="totalEarning != null">
+                total_earning = #{totalEarning},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        <where>
+            user_id=#{userId}
+        </where>
+    </update>
+    
+    <update id="updateBySum" parameterType="UserBalance">
+        update "t_user_balance"
+        <set>
+            <if test="earning != null">
+                earning = earning + #{earning},
+            </if>
+            <if test="diamond != null">
+                diamond = diamond + #{diamond},
+            </if>
+            <if test="totalEarning != null">
+                total_earning = total_earning + #{totalEarning},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        <where>
+            user_id=#{userId}
+        </where>
+    </update>
+
+    <update id="updateBalanceBySum" parameterType="UserBalance">
+        update "t_user_balance"
+        <set>
+            <if test="diamond != null">
+                diamond = diamond + #{diamond},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        <where>
+            user_id=#{userId}
+        </where>
+    </update>
+
+    <select id="selectTopTotalEarning" resultType="java.util.HashMap">
+      select u.id as "userId", 
+        ub.total_earning as "vNumber",
+        u.level as "userLevel",
+        u.nick_name "userContent"
+      from t_user_balance ub, "user" u
+        where u.id = ub.user_id 
+      order by ub.total_earning desc
+        limit #{top} offset 0
+    </select>
+    
+</mapper>

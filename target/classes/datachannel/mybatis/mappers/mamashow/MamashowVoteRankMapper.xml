@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mosai.vliveshow.datachannel.repository.mamashow.MamashowVoteRankMapper" >
+  <resultMap id="BaseResultMap" type="com.mosai.vliveshow.datachannel.domain.mamashow.MamashowVoteRank" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+    <result column="votes" property="votes" jdbcType="BIGINT" />
+    <result column="week_no" property="weekNo" jdbcType="INTEGER" />
+    <result column="year_no" property="yearNo" jdbcType="INTEGER" />
+    <result column="avatar_url" property="avatarUrl" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, nick_name, votes, week_no, year_no, avatar_url, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_mamashow_vote_rank
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByCdt" resultMap="BaseResultMap" parameterType="com.mosai.vliveshow.datachannel.domain.mamashow.MamashowVoteRank" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_mamashow_vote_rank
+    <where >
+      <if test="userId != null" >
+        and user_id = #{userId,jdbcType=BIGINT}
+      </if>
+      <if test="nickName != null" >
+        and nick_name = #{nickName,jdbcType=VARCHAR}
+      </if>
+      <if test="votes != null" >
+        and votes = #{votes,jdbcType=BIGINT}
+      </if>
+      <if test="weekNo != null" >
+        and week_no = #{weekNo,jdbcType=INTEGER}
+      </if>
+      <if test="yearNo != null" >
+        and year_no = #{yearNo,jdbcType=INTEGER}
+      </if>
+      <if test="avatarUrl != null" >
+        and avatar_url = #{avatarUrl,jdbcType=VARCHAR}
+      </if>
+      <if test="createTime != null" >
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        and update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_mamashow_vote_rank
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mosai.vliveshow.datachannel.domain.mamashow.MamashowVoteRank" >
+    insert into t_mamashow_vote_rank (id, user_id, nick_name, 
+      votes, week_no, year_no, 
+      avatar_url, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{nickName,jdbcType=VARCHAR}, 
+      #{votes,jdbcType=BIGINT}, #{weekNo,jdbcType=INTEGER}, #{yearNo,jdbcType=INTEGER}, 
+      #{avatarUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mosai.vliveshow.datachannel.domain.mamashow.MamashowVoteRank" >
+    insert into t_mamashow_vote_rank
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="nickName != null" >
+        nick_name,
+      </if>
+      <if test="votes != null" >
+        votes,
+      </if>
+      <if test="weekNo != null" >
+        week_no,
+      </if>
+      <if test="yearNo != null" >
+        year_no,
+      </if>
+      <if test="avatarUrl != null" >
+        avatar_url,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="nickName != null" >
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="votes != null" >
+        #{votes,jdbcType=BIGINT},
+      </if>
+      <if test="weekNo != null" >
+        #{weekNo,jdbcType=INTEGER},
+      </if>
+      <if test="yearNo != null" >
+        #{yearNo,jdbcType=INTEGER},
+      </if>
+      <if test="avatarUrl != null" >
+        #{avatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mosai.vliveshow.datachannel.domain.mamashow.MamashowVoteRank" >
+    update t_mamashow_vote_rank
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="nickName != null" >
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="votes != null" >
+        votes = #{votes,jdbcType=BIGINT},
+      </if>
+      <if test="weekNo != null" >
+        week_no = #{weekNo,jdbcType=INTEGER},
+      </if>
+      <if test="yearNo != null" >
+        year_no = #{yearNo,jdbcType=INTEGER},
+      </if>
+      <if test="avatarUrl != null" >
+        avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mosai.vliveshow.datachannel.domain.mamashow.MamashowVoteRank" >
+    update t_mamashow_vote_rank
+    set user_id = #{userId,jdbcType=BIGINT},
+      nick_name = #{nickName,jdbcType=VARCHAR},
+      votes = #{votes,jdbcType=BIGINT},
+      week_no = #{weekNo,jdbcType=INTEGER},
+      year_no = #{yearNo,jdbcType=INTEGER},
+      avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateVotes" parameterType="com.mosai.vliveshow.datachannel.domain.mamashow.MamashowVoteRank" >
+    update t_mamashow_vote_rank
+      set votes =votes+1,
+          update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=BIGINT} and week_no = #{weekNo,jdbcType=INTEGER}
+  </update>
+
+  <select id="weekRankList" resultMap="BaseResultMap" parameterType="com.mosai.vliveshow.datachannel.domain.mamashow.MamashowVoteRank">
+    SELECT * FROM t_mamashow_vote_rank
+      WHERE week_no = #{weekNo,jdbcType=INTEGER}
+    ORDER BY votes DESC, update_time ASC
+  </select>
+</mapper>

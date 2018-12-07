@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.mosai.vliveshow.datachannel.domain.money.TransactionEarning">
+    
+    <resultMap type="TransactionEarning" id="transactionEarningMap">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="trans_status" property="transStatus"/>
+        <result column="trans_type" property="transType"/>
+        <result column="trans_method" property="transMethod"/>
+        <result column="transaction_no" property="transactionNo"/>
+        <result column="total_amount" property="totalAmount"/>
+        <result column="amount" property="amount"/>
+        <result column="fee" property="fee"/>
+        <result column="fee_rate" property="feeRate"/>
+        <result column="earning" property="earning"/>
+        <result column="earning2cash_rate" property="earning2CashRate"/>
+        <result column="balance_earning" property="balanceEarning"/>
+        <result column="room_id" property="roomId"/>
+        <result column="cashout_id" property="cashoutId"/>
+        <result column="sharing_rate" property="sharingRate"/>
+        <result column="remark" property="remark"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+    
+    <sql id="commonSelect">
+        select id as id,
+               user_id as user_id,
+        	   trans_status as trans_status,
+        	   trans_type as trans_type,
+        	   trans_method as trans_method,
+        	   transaction_no as transaction_no,
+        	   total_amount as total_amount,
+        	   amount as amount,
+        	   fee as fee,
+        	   fee_rate as fee_rate,
+        	   earning as earning,
+        	   earning2cash_rate as earning2cash_rate,
+        	   balance_earning as balance_earning,
+        	   room_id as room_id,
+        	   cashout_id as cashout_id,
+        	   sharing_rate as sharing_rate,
+        	   remark as remark,
+        	   create_time as create_time
+        from "t_transaction_earning" t
+    </sql>
+    
+    <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="TransactionEarning">
+    	insert into "t_transaction_earning"(user_id,trans_status,trans_type,trans_method,transaction_no,total_amount,amount,fee,fee_rate,earning,earning2cash_rate,balance_earning,room_id,cashout_id,sharing_rate,remark,create_time) 
+    	           values (#{userId},#{transStatus},#{transType},#{transMethod},#{transactionNo},#{totalAmount},#{amount},#{fee},#{feeRate},#{earning},#{earning2CashRate},#{balanceEarning},#{roomId},#{cashoutId},#{sharingRate},#{remark},#{createTime})
+    </insert>
+    
+    <select id="getById" resultMap="transactionEarningMap">
+        <include refid="commonSelect"/>
+        where id=#{id}
+    </select>
+    
+    <select id="queryPageTransaction" resultMap="transactionEarningMap">
+        <include refid="commonSelect"/>
+        <where>
+             <if test="params.userId != null and params.userId != ''">
+                 user_id=#{params.userId}
+             </if>
+             <if test="params.transType != null and params.transType != ''">
+                 <![CDATA[and trans_type=#{params.transType}]]>
+             </if>
+         </where>
+         <if test="sorts.keys.size() > 0">
+         	 order by
+             <foreach collection="sorts.keys" item="key" separator=",">
+             	${key} ${sorts[key]}
+             </foreach>
+         </if>
+    </select>
+    
+</mapper>

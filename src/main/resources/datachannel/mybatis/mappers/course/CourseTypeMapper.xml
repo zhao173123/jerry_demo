@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mosai.vliveshow.datachannel.repository.course.CourseTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.mosai.vliveshow.datachannel.domain.course.CourseType" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_no" property="orderNo" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="is_deleted" property="isDeleted" jdbcType="BIT" />
+    <result column="operator" property="operator" jdbcType="INTEGER" />
+    <result column="name_cn" property="nameCn" jdbcType="VARCHAR" />
+    <result column="name_tw" property="nameTw" jdbcType="VARCHAR" />
+    <result column="name_en" property="nameEn" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, order_no, create_time, update_time, is_deleted, operator, name_cn, name_tw, name_en
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_course_type
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByCdt" resultMap="BaseResultMap" parameterType="com.mosai.vliveshow.datachannel.domain.course.CourseType" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_course_type
+    <where >
+      <if test="orderNo != null" >
+        and order_no = #{orderNo,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null" >
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        and update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="isDeleted != null" >
+        and is_deleted = #{isDeleted,jdbcType=BIT}
+      </if>
+      <if test="operator != null" >
+        and operator = #{operator,jdbcType=INTEGER}
+      </if>
+      <if test="nameCn != null" >
+        and name_cn = #{nameCn,jdbcType=VARCHAR}
+      </if>
+      <if test="nameTw != null" >
+        and name_tw = #{nameTw,jdbcType=VARCHAR}
+      </if>
+      <if test="nameEn != null" >
+        and name_en = #{nameEn,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_course_type
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mosai.vliveshow.datachannel.domain.course.CourseType" >
+    insert into t_course_type (id, order_no, create_time, 
+      update_time, is_deleted, operator, 
+      name_cn, name_tw, name_en
+      )
+    values (#{id,jdbcType=INTEGER}, #{orderNo,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=BIT}, #{operator,jdbcType=INTEGER}, 
+      #{nameCn,jdbcType=VARCHAR}, #{nameTw,jdbcType=VARCHAR}, #{nameEn,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mosai.vliveshow.datachannel.domain.course.CourseType" >
+    insert into t_course_type
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+      <if test="nameCn != null" >
+        name_cn,
+      </if>
+      <if test="nameTw != null" >
+        name_tw,
+      </if>
+      <if test="nameEn != null" >
+        name_en,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=INTEGER},
+      </if>
+      <if test="nameCn != null" >
+        #{nameCn,jdbcType=VARCHAR},
+      </if>
+      <if test="nameTw != null" >
+        #{nameTw,jdbcType=VARCHAR},
+      </if>
+      <if test="nameEn != null" >
+        #{nameEn,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mosai.vliveshow.datachannel.domain.course.CourseType" >
+    update t_course_type
+    <set >
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=INTEGER},
+      </if>
+      <if test="nameCn != null" >
+        name_cn = #{nameCn,jdbcType=VARCHAR},
+      </if>
+      <if test="nameTw != null" >
+        name_tw = #{nameTw,jdbcType=VARCHAR},
+      </if>
+      <if test="nameEn != null" >
+        name_en = #{nameEn,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mosai.vliveshow.datachannel.domain.course.CourseType" >
+    update t_course_type
+    set order_no = #{orderNo,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=BIT},
+      operator = #{operator,jdbcType=INTEGER},
+      name_cn = #{nameCn,jdbcType=VARCHAR},
+      name_tw = #{nameTw,jdbcType=VARCHAR},
+      name_en = #{nameEn,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

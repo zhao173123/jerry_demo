@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mosai.vliveshow.datachannel.repository.zbird.ValentineZbirdGiftCodeMapper" >
+  <resultMap id="BaseResultMap" type="com.mosai.vliveshow.datachannel.domain.zbird.ValentineZbirdGiftCode" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="gift_name" property="giftName" jdbcType="VARCHAR" />
+    <result column="area" property="area" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, gift_name, area, code, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_valentine_zbird_gift_code
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByCdt" resultMap="BaseResultMap" parameterType="com.mosai.vliveshow.datachannel.domain.zbird.ValentineZbirdGiftCode" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_valentine_zbird_gift_code
+    <where >
+      <if test="userId != null" >
+        and user_id = #{userId,jdbcType=BIGINT}
+      </if>
+      <if test="giftName != null" >
+        and gift_name = #{giftName,jdbcType=VARCHAR}
+      </if>
+      <if test="area != null" >
+        and area = #{area,jdbcType=VARCHAR}
+      </if>
+      <if test="code != null" >
+        and code = #{code,jdbcType=VARCHAR}
+      </if>
+      <if test="createTime != null" >
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        and update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+  <select id="selectAvailableByCdt" resultMap="BaseResultMap" parameterType="com.mosai.vliveshow.datachannel.domain.zbird.ValentineZbirdGiftCode" >
+    select
+    <include refid="Base_Column_List" />
+    from t_valentine_zbird_gift_code
+    <where >
+      user_id IS NULL
+      <if test="giftName != null" >
+        and gift_name = #{giftName,jdbcType=VARCHAR}
+      </if>
+      <if test="area != null" >
+        and area = #{area,jdbcType=VARCHAR}
+      </if>
+      <if test="code != null" >
+        and code = #{code,jdbcType=VARCHAR}
+      </if>
+    </where>
+    order by random()
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_valentine_zbird_gift_code
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mosai.vliveshow.datachannel.domain.zbird.ValentineZbirdGiftCode" >
+    insert into t_valentine_zbird_gift_code (id, user_id, gift_name, 
+      area, code, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{giftName,jdbcType=VARCHAR}, 
+      #{area,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mosai.vliveshow.datachannel.domain.zbird.ValentineZbirdGiftCode" >
+    insert into t_valentine_zbird_gift_code
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="giftName != null" >
+        gift_name,
+      </if>
+      <if test="area != null" >
+        area,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="giftName != null" >
+        #{giftName,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mosai.vliveshow.datachannel.domain.zbird.ValentineZbirdGiftCode" >
+    update t_valentine_zbird_gift_code
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="giftName != null" >
+        gift_name = #{giftName,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        area = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mosai.vliveshow.datachannel.domain.zbird.ValentineZbirdGiftCode" >
+    update t_valentine_zbird_gift_code
+    set user_id = #{userId,jdbcType=BIGINT},
+      gift_name = #{giftName,jdbcType=VARCHAR},
+      area = #{area,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

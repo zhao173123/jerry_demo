@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.mosai.vliveshow.datachannel.domain.money.RechargeOrder">
+    
+    <resultMap type="RechargeOrder" id="rechargeOrderMap">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="status" property="status"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="product_id" property="productId"/>
+        <result column="product_name" property="productName"/>
+        <result column="product_count" property="productCount"/>
+        <result column="total" property="total"/>
+        <result column="currency" property="currency"/>
+        <result column="diamond" property="diamond"/>
+        <result column="balance_diamond" property="balanceDiamond"/>
+        <result column="pay_platform" property="payPlatform"/>
+        <result column="pay_certificate" property="payCertificate"/>
+        <result column="pay_time" property="payTime"/>
+        <result column="remark" property="remark"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="create_time" property="createTime"/>
+        <result column="prepay_id" property="prepayId"/>
+    </resultMap>
+    
+    <sql id="commonSelect">
+        select id as id,
+               user_id as user_id,
+        	   status as status,
+        	   order_no as order_no,
+        	   product_id as product_id,
+        	   product_name as product_name,
+        	   product_count as product_count,
+        	   total as total,
+        	   currency as currency,
+        	   diamond as diamond,
+        	   balance_diamond as balance_diamond,
+        	   pay_platform as pay_platform,
+        	   pay_certificate as pay_certificate,
+        	   pay_time as pay_time,
+        	   remark as remark,
+        	   update_time as update_time,
+        	   create_time as create_time,
+        	   prepay_id as prepay_id
+        from "t_recharge_order" o
+    </sql>
+    
+    <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="RechargeOrder">
+    	insert into "t_recharge_order"(user_id,status,order_no,product_id,product_name,product_count,total,currency,diamond,balance_diamond,pay_platform,pay_certificate,pay_time,remark,update_time,create_time) 
+    	           values (#{userId},#{status},#{orderNo},#{productId},#{productName},#{productCount},#{total},#{currency},#{diamond},#{balanceDiamond},#{payPlatform},#{payCertificate},#{payTime},#{remark},#{updateTime},#{createTime})
+    </insert>
+    
+    <select id="getById" resultMap="rechargeOrderMap">
+        <include refid="commonSelect"/>
+        where id=#{id}
+    </select>
+
+    <select id="getByUserId" resultMap="rechargeOrderMap">
+        <include refid="commonSelect"/>
+        where user_id=#{userId}
+    </select>
+
+    <select id="getByOrderNo" resultMap="rechargeOrderMap">
+        <include refid="commonSelect"/>
+        where order_no=#{orderNo}
+    </select>
+    
+    <update id="update" parameterType="RechargeOrder">
+        update "t_recharge_order"
+        <set>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="orderNo != null">
+                order_no = #{orderNo},
+            </if>
+            <if test="productId != null">
+                product_id = #{productId},
+            </if>
+             <if test="productName != null">
+                product_name = #{productName},
+            </if>
+             <if test="productCount != null">
+                product_count = #{productCount},
+            </if>
+             <if test="total != null">
+                total = #{total},
+            </if>
+             <if test="currency != null">
+                currency = #{currency},
+            </if>
+             <if test="diamond != null">
+                diamond = #{diamond},
+            </if>
+            <if test="balanceDiamond != null">
+                balance_diamond = #{balanceDiamond},
+            </if>
+            <if test="payPlatform != null">
+                pay_platform = #{payPlatform},
+            </if>
+            <if test="prepayId != null">
+                prepay_id = #{prepayId}
+            </if>
+        </set>
+        <where>
+            id=#{id}
+        </where>
+    </update>
+    
+    <select id="queryPageRechargeOrder" resultMap="rechargeOrderMap">
+        <include refid="commonSelect"/>
+        <where>
+        	 status = 1
+             <if test="params.userId != null and params.userId != ''">
+                and user_id=#{params.userId}
+             </if>
+                and pay_platform in ('WECHAT','iap','ALIPAY')
+         </where>
+         <if test="sorts.keys.size() > 0">
+         	 order by
+             <foreach collection="sorts.keys" item="key" separator=",">
+             	${key} ${sorts[key]}
+             </foreach>
+         </if>
+    </select>
+    
+</mapper>
