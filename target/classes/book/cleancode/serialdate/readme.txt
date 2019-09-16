@@ -1,3 +1,0 @@
-本package分析了JCommon类库中的SerialDate
-参见jcommon包源码
-

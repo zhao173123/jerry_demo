@@ -271,6 +271,14 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.apache.curator/curator-framework -->
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-framework</artifactId>
+			<version>4.2.0</version>
+		</dependency>
+
+
 	</dependencies>
 	<build>
 		<plugins>
