@@ -66,7 +66,7 @@ public class LambdaTest {
 		List<String> names = new ArrayList<String>();
 		names.add("Taobao");
 		names.add("baidu");
-		List<String> lowerCaseNames = FluentIterable.from(names).transform(name -> name.toLowerCase()).toImmutableList();
+		List<String> lowerCaseNames = FluentIterable.from(names).transform(name -> name.toLowerCase()).toList();
 		System.out.println(lowerCaseNames);//[taobao,baidu]
 	}
 
