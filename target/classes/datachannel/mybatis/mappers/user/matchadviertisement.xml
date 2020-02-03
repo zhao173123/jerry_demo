@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.mosai.vliveshow.datachannel.domain.adviertisement.MatchAdviertisement">
+    
+    <resultMap type="MatchAdviertisement" id="matchAdviertisementMap">
+        <id column="id" property="id"/>
+        <result column="status" property="status"/>
+        <result column="muid" property="muid"/>
+        <result column="mac" property="mac"/>
+        <result column="idfa" property="idfa"/> 
+        <result column="callback" property="callback"/>                
+        <result column="update_time" property="updateTime"/>
+        <result column="create_time" property="createTime"/>
+        <result column="receive_para" property="receivePara"/>
+    </resultMap>
+    
+    <sql id="commonSelect">
+        select id as id,
+        	   status as status,
+        	   muid as muid,
+        	   mac as mac,
+        	   idfa as idfa,
+        	   callback as callback,
+        	   update_time as update_time,
+        	   create_time as create_time,
+        	   receive_para as receive_para 
+        from "match_adviertisement" ma
+    </sql>
+    
+    <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="Adviertisement">
+    	insert into "match_adviertisement"(status,muid,mac,idfa,callback,update_time,create_time,receive_para) 
+    	           values (#{status},#{muid},#{mac},#{idfa},#{callback},#{updateTime},#{createTime},#{receivePara})
+    </insert>
+    
+    <select id="getByIdfa" resultMap="matchAdviertisementMap">
+        <include refid="commonSelect"/>
+        where idfa=#{idfa} limit 1
+    </select>
+    
+    <select id="getByMuid" resultMap="matchAdviertisementMap">
+        <include refid="commonSelect"/>
+        where muid=#{muid} limit 1
+    </select>
+    
+    <update id="update" parameterType="MatchAdviertisement">
+        update "match_adviertisement"
+        <set>
+            <if test="status != null">
+                status = #{status},
+            </if>  
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>            
+        </set>
+        <where>
+            muid = #{muid}
+        </where>
+    </update>
+    
+</mapper>

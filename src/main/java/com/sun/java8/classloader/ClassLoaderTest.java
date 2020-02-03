@@ -30,6 +30,7 @@ public class ClassLoaderTest {
 	 * 	path不能以"/"开头
 	 *  path是从ClassPath根下获取资源
 	 */
+	@Test
 	public void testClassLoaderResource(){
 		//file:/Users/jerry/myself/github/jerry_test/target/classes/com/sun/java8/classloader/
 		System.out.println(ClassLoaderTest.class.getResource(""));

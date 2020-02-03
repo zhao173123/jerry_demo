@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mosai.vliveshow.datachannel.repository.zbird.ValentineZbirdApplyMapper" >
+  <resultMap id="BaseResultMap" type="com.mosai.vliveshow.datachannel.domain.zbird.ValentineZbirdApply" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="boy_name" property="boyName" jdbcType="VARCHAR" />
+    <result column="girl_name" property="girlName" jdbcType="VARCHAR" />
+    <result column="ours_avatar_url" property="oursAvatarUrl" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="area" property="area" jdbcType="VARCHAR" />
+    <result column="phone_encrypt" property="phoneEncrypt" jdbcType="VARCHAR" />
+    <result column="ours_story" property="oursStory" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="channel_source" property="channelSource" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, boy_name, girl_name, ours_avatar_url, mobile, area, phone_encrypt, ours_story, 
+    create_time, update_time, channel_source
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_valentine_zbird_apply
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectByCdt" resultMap="BaseResultMap" parameterType="com.mosai.vliveshow.datachannel.domain.zbird.ValentineZbirdApply" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_valentine_zbird_apply
+    <where >
+      <if test="userId != null" >
+        and user_id = #{userId,jdbcType=BIGINT}
+      </if>
+      <if test="boyName != null" >
+        and boy_name = #{boyName,jdbcType=VARCHAR}
+      </if>
+      <if test="girlName != null" >
+        and girl_name = #{girlName,jdbcType=VARCHAR}
+      </if>
+      <if test="oursAvatarUrl != null" >
+        and ours_avatar_url = #{oursAvatarUrl,jdbcType=VARCHAR}
+      </if>
+      <if test="mobile != null" >
+        and mobile = #{mobile,jdbcType=VARCHAR}
+      </if>
+      <if test="area != null" >
+        and area = #{area,jdbcType=VARCHAR}
+      </if>
+      <if test="phoneEncrypt != null" >
+        and phone_encrypt = #{phoneEncrypt,jdbcType=VARCHAR}
+      </if>
+      <if test="oursStory != null" >
+        and ours_story = #{oursStory,jdbcType=VARCHAR}
+      </if>
+      <if test="createTime != null" >
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        and update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="channelSource != null" >
+        and channel_source = #{channelSource,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_valentine_zbird_apply
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.mosai.vliveshow.datachannel.domain.zbird.ValentineZbirdApply" >
+    insert into t_valentine_zbird_apply (id, user_id, boy_name, 
+      girl_name, ours_avatar_url, mobile, 
+      area, phone_encrypt, ours_story, 
+      create_time, update_time, channel_source)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{boyName,jdbcType=VARCHAR}, 
+      #{girlName,jdbcType=VARCHAR}, #{oursAvatarUrl,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{area,jdbcType=VARCHAR}, #{phoneEncrypt,jdbcType=VARCHAR}, #{oursStory,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{channelSource,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mosai.vliveshow.datachannel.domain.zbird.ValentineZbirdApply" >
+    insert into t_valentine_zbird_apply
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="boyName != null" >
+        boy_name,
+      </if>
+      <if test="girlName != null" >
+        girl_name,
+      </if>
+      <if test="oursAvatarUrl != null" >
+        ours_avatar_url,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="area != null" >
+        area,
+      </if>
+      <if test="phoneEncrypt != null" >
+        phone_encrypt,
+      </if>
+      <if test="oursStory != null" >
+        ours_story,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="channelSource != null" >
+        channel_source,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="boyName != null" >
+        #{boyName,jdbcType=VARCHAR},
+      </if>
+      <if test="girlName != null" >
+        #{girlName,jdbcType=VARCHAR},
+      </if>
+      <if test="oursAvatarUrl != null" >
+        #{oursAvatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneEncrypt != null" >
+        #{phoneEncrypt,jdbcType=VARCHAR},
+      </if>
+      <if test="oursStory != null" >
+        #{oursStory,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="channelSource != null" >
+        #{channelSource,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mosai.vliveshow.datachannel.domain.zbird.ValentineZbirdApply" >
+    update t_valentine_zbird_apply
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="boyName != null" >
+        boy_name = #{boyName,jdbcType=VARCHAR},
+      </if>
+      <if test="girlName != null" >
+        girl_name = #{girlName,jdbcType=VARCHAR},
+      </if>
+      <if test="oursAvatarUrl != null" >
+        ours_avatar_url = #{oursAvatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        area = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneEncrypt != null" >
+        phone_encrypt = #{phoneEncrypt,jdbcType=VARCHAR},
+      </if>
+      <if test="oursStory != null" >
+        ours_story = #{oursStory,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="channelSource != null" >
+        channel_source = #{channelSource,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mosai.vliveshow.datachannel.domain.zbird.ValentineZbirdApply" >
+    update t_valentine_zbird_apply
+    set user_id = #{userId,jdbcType=BIGINT},
+      boy_name = #{boyName,jdbcType=VARCHAR},
+      girl_name = #{girlName,jdbcType=VARCHAR},
+      ours_avatar_url = #{oursAvatarUrl,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      area = #{area,jdbcType=VARCHAR},
+      phone_encrypt = #{phoneEncrypt,jdbcType=VARCHAR},
+      ours_story = #{oursStory,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

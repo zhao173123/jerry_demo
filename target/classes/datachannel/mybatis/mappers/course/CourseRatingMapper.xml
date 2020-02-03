@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mosai.vliveshow.datachannel.repository.course.CourseRatingMapper" >
+  <resultMap id="BaseResultMap" type="com.mosai.vliveshow.datachannel.domain.course.CourseRating" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="rating" property="rating" jdbcType="INTEGER" />
+    <result column="lesson_id" property="lessonId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="course_id" property="courseId" jdbcType="INTEGER" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, rating, lesson_id, create_time, update_time, course_id, content
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_course_rating
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByCdt" resultMap="BaseResultMap" parameterType="com.mosai.vliveshow.datachannel.domain.course.CourseRating" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_course_rating
+    <where >
+      <if test="userId != null" >
+        and user_id = #{userId,jdbcType=BIGINT}
+      </if>
+      <if test="rating != null" >
+        and rating = #{rating,jdbcType=INTEGER}
+      </if>
+      <if test="lessonId != null" >
+        and lesson_id = #{lessonId,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null" >
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+        and update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="courseId != null" >
+        and course_id = #{courseId,jdbcType=INTEGER}
+      </if>
+      <if test="content != null" >
+        and content = #{content,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_course_rating
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mosai.vliveshow.datachannel.domain.course.CourseRating" >
+    insert into t_course_rating (id, user_id, rating, 
+      lesson_id, create_time, update_time, 
+      course_id,content)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{rating,jdbcType=INTEGER}, 
+      #{lessonId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{courseId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mosai.vliveshow.datachannel.domain.course.CourseRating" >
+    insert into t_course_rating
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="rating != null" >
+        rating,
+      </if>
+      <if test="lessonId != null" >
+        lesson_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="courseId != null" >
+        course_id,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="rating != null" >
+        #{rating,jdbcType=INTEGER},
+      </if>
+      <if test="lessonId != null" >
+        #{lessonId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="courseId != null" >
+        #{courseId,jdbcType=INTEGER},
+      </if>
+       <if test="content != null" >
+        #{content,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mosai.vliveshow.datachannel.domain.course.CourseRating" >
+    update t_course_rating
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="rating != null" >
+        rating = #{rating,jdbcType=INTEGER},
+      </if>
+      <if test="lessonId != null" >
+        lesson_id = #{lessonId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="courseId != null" >
+        course_id = #{courseId,jdbcType=INTEGER},
+      </if>
+       <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mosai.vliveshow.datachannel.domain.course.CourseRating" >
+    update t_course_rating
+    set user_id = #{userId,jdbcType=BIGINT},
+      rating = #{rating,jdbcType=INTEGER},
+      lesson_id = #{lessonId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      course_id = #{courseId,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="getAvgRating" resultType="java.util.HashMap" parameterType="java.lang.Integer" >
+    select count(id) as evaluatenum, round(avg(rating),2) as evaluatescore 
+    FROM t_course_rating where lesson_id = #{lessonId,jdbcType=INTEGER}
+  </select>
+</mapper>

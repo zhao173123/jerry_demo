@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.mosai.vliveshow.datachannel.domain.money.CashoutRequest">
+    
+    <resultMap type="CashoutRequest" id="cashoutRequestMap">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="status" property="status"/>
+        <result column="cashout_no" property="cashoutNo"/>
+        <result column="amount" property="amount"/>
+        <result column="total_amount" property="totalAmount"/>
+        <result column="fee" property="fee"/>
+        <result column="fee_rate" property="feeRate"/>
+        <result column="tax_rate" property="taxRate"/>
+        <result column="earning" property="earning"/>
+        <result column="earning2cash_rate" property="earning2CashRate"/>
+        <result column="sharing_rate" property="sharingRate"/>
+        <result column="account" property="account"/>
+        <result column="account_type" property="accountType"/>
+        <result column="account_number" property="accountNumber"/>
+        <result column="account_city" property="accountCity"/>
+        <result column="account_branch" property="accountBranch"/>
+        <result column="trans_no" property="transNo"/>
+        <result column="remark" property="remark"/>
+        <result column="operator" property="operator"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+    
+    <sql id="commonSelect">
+        select id as id,
+               user_id as user_id,
+        	   status as status,
+        	   cashout_no as cashout_no,
+        	   amount as amount,
+        	   total_amount as total_amount,
+        	   fee as fee,
+        	   fee_rate as fee_rate,
+        	   tax_rate as tax_rate,
+        	   earning as earning,
+        	   earning2cash_rate as earning2cash_rate,
+        	   sharing_rate as sharing_rate,
+        	   account as account,
+        	   account_type as account_type,
+        	   account_number as account_number,
+        	   account_city as account_city,
+        	   account_branch as account_branch,
+        	   trans_no as trans_no,
+        	   remark as remark,
+        	   operator as operator,
+        	   update_time as update_time,
+        	   create_time as create_time
+        from "t_cashout_request" c
+    </sql>
+    
+    <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="CashoutRequest">
+    	insert into "t_cashout_request"(user_id,status,cashout_no,amount,total_amount,fee,fee_rate,tax_rate,earning,earning2cash_rate,sharing_rate,account,account_type,account_number,account_city,account_branch,trans_no,remark,operator,update_time,create_time) 
+    	           values (#{userId},#{status},#{cashoutNo},#{amount},#{totalAmount},#{fee},#{feeRate},#{taxRate},#{earning},#{earning2CashRate},#{sharingRate},#{account},#{accountType},#{accountNumber},#{accountCity},#{accountBranch},#{transNo},#{remark},#{operator},#{updateTime},#{createTime})
+    </insert>
+    
+    <select id="getById" resultMap="cashoutRequestMap">
+        <include refid="commonSelect"/>
+        where id=#{id}
+    </select>
+    
+    <update id="update" parameterType="CashoutRequest">
+        update "t_cashout_request"
+        <set>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="transNo != null">
+                trans_no = #{transNo},
+            </if>
+            <if test="operator != null">
+                operator = #{operator},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+        </set>
+        <where>
+            id=#{id}
+        </where>
+    </update>
+    
+    <select id="queryPageCashout" resultMap="cashoutRequestMap">
+        <include refid="commonSelect"/>
+        <where>
+             <if test="params.userId != null and params.userId != ''">
+                 user_id=#{params.userId}
+             </if>
+             <if test="params.status != null and params.status != ''">
+                 status=#{params.status}
+             </if>
+         </where>
+         <if test="sorts.keys.size() > 0">
+         	 order by
+             <foreach collection="sorts.keys" item="key" separator=",">
+             	${key} ${sorts[key]}
+             </foreach>
+         </if>
+    </select>
+    
+</mapper>

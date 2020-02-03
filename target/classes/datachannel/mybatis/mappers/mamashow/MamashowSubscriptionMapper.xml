@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mosai.vliveshow.datachannel.repository.mamashow.MamashowSubscriptionMapper" >
+  <resultMap id="BaseResultMap" type="com.mosai.vliveshow.datachannel.domain.mamashow.MamashowSubscription" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="due_show_time" property="dueShowTime" jdbcType="TIMESTAMP" />
+    <result column="due_show_hour" property="dueShowHour" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="mama_show_no" property="mamaShowNo" jdbcType="VARCHAR" />
+    <result column="live_show_no" property="liveShowNo" jdbcType="VARCHAR" />
+    <result column="is_show" property="isShow" jdbcType="BIT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id,due_show_time,due_show_hour,user_id,mama_show_no,live_show_no,
+    is_show,create_time,update_time from t_mamashow_subscription
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getDueInfoByUserId" parameterType="java.util.Map" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    <where>
+	    <if test="userId != null">
+	           user_id = #{userId,jdbcType=BIGINT}
+	    </if>
+	    <if test="currentDate != null">
+	           <![CDATA[and due_show_time > #{currentDate,jdbcType=TIMESTAMP}]]>   
+	    </if>
+    </where>
+  </select>
+  
+   <update id="markStatus" parameterType="MamashowSubscription">
+      <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+        update public.t_mamashow_subscription
+        <set>
+            is_show =${item.isShow}
+        </set>
+        where 
+        cast(mama_show_no as bigint) = ${item.mamaShowNo}
+     </foreach> 
+   </update>
+    
+  <select id="getMamaInfoList" parameterType="java.util.Map" resultType="java.util.HashMap" >
+    select tma.avatar_url as avatarUrl,
+    to_char(tms.due_show_time,'YYYY-MM-DD') as dueShowTime,
+    tms.due_show_hour as dueShowHour,
+    tms.mama_show_no as mamaShowNo,
+    tms.user_id as userId,
+    tma.mama_name as mamaName,
+    tma.talent as talent,
+    tms.is_show as isShow
+     from public.user usr
+     inner join public.t_mamashow_subscription tms on  tms.user_id = usr.id
+     inner join t_mamashow_mama_apply tma on usr.mobile_phone = tma.mobile
+	where 
+	tms.due_show_time = to_date(#{dueShowTime,jdbcType=VARCHAR},'YYYY-MM-DD')
+	and substring( tms.due_show_hour from 1 for 2) = #{dueShowHour,jdbcType=VARCHAR}
+	and tms.live_show_no = #{liveShowNo,jdbcType=VARCHAR}
+	order by mamashowno
+  </select>
+  
+  <select id="getDueDurationSubscription" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    <where>
+	    <if test="dueShowTime != null">
+	           due_show_time = to_date(#{dueShowTime,jdbcType=VARCHAR},'YYYY-MM-DD')
+	    </if>
+	    <if test="dueShowHour != null">
+	          and due_show_hour = #{dueShowHour}   
+	    </if>
+    </where>
+     order by mama_show_no asc
+  </select>
+      <insert id="insert" parameterType="com.mosai.vliveshow.datachannel.domain.mamashow.MamashowSubscription">
+    insert into t_mamashow_subscription (due_show_time,due_show_hour,user_id,mama_show_no,live_show_no,
+    is_show,create_time,update_time)
+    values (#{dueShowTime,jdbcType=TIMESTAMP}, #{dueShowHour,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=BIGINT}, #{mamaShowNo,jdbcType=VARCHAR}, #{liveShowNo,jdbcType=VARCHAR}, 
+      #{isShow,jdbcType=BIT},#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+   <select id="countSubscription" parameterType="java.util.Map" resultType="_int">
+  	select count(1) from t_mamashow_subscription
+    <where>
+	    <if test="userId != null">
+	           user_id = #{userId,jdbcType=BIGINT}
+	    </if>
+    </where>
+  </select>
+</mapper>

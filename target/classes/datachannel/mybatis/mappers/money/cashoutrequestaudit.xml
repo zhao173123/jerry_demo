@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.mosai.vliveshow.datachannel.domain.money.CashoutRequestAudit">
+    
+    <resultMap type="CashoutRequestAudit" id="cashoutRequestAuditMap">
+        <id column="id" property="id"/>
+        <result column="cashout_id" property="cashoutId"/>
+        <result column="status" property="status"/>
+        <result column="errors" property="errors"/>
+        <result column="remark" property="remark"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+    
+    <sql id="commonSelect">
+        select id as id,
+               cashout_id as cashout_id,
+        	   status as status,
+        	   errors as errors,
+        	   remark as remark,
+        	   create_time as create_time
+        from "t_cashout_request_audit" c
+    </sql>
+    
+    <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="cashoutRequestAudit">
+    	insert into "t_cashout_request_audit"(cashout_id,status,errors,remark,create_time) 
+    	           values (#{cashoutId},#{status},#{errors},#{remark},now()); 
+    </insert>
+    
+    <select id="getById" resultMap="cashoutRequestAuditMap">
+        <include refid="commonSelect"/>
+        where id=#{id}
+    </select>
+    
+    <select id="getCashoutRequestAuditList" resultMap="cashoutRequestAuditMap">
+        <include refid="commonSelect"/>
+        where cashout_id=#{cashoutId}
+    </select>
+    
+</mapper>

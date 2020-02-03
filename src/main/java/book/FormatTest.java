@@ -32,7 +32,6 @@ public class FormatTest {
 	public static void main(String[] args){
 		int x = 5;
 		double y = 3.1415926;
-		
 		//一般方式
 		System.out.println("x = " + x + ",y = " + y);//x = 5,y = 3.1415926
 		//printf()

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.mosai.vliveshow.datachannel.domain.user.UserAttention">
+    
+    <resultMap type="UserAttention" id="userMap">
+        <result column="user_from_uid" property="userFromUID"/>
+        <result column="user_to_uid" property="userToUID"/>
+        <result column="create_time" property="createTime"/>
+        <result column="avatars" property="avatars" typeHandler="com.mosai.vliveshow.core.orm.mybatis.handler.JsonEntityTypeHandler"/>
+        <result column="username" property="username"/>
+        <result column="intro" property="intro"/>
+        <result column="gender" property="gender"/>
+        <result column="flag" property="flag"/>
+        <result column="nickName" property="nickName"/>
+        <result column="both_attend_flag" property="bothAttendFlag"/>
+    </resultMap>
+    
+    <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="UserAttention">
+    	insert into "user_attention"(user_from_uid,user_to_uid,create_time) 
+    	           values (#{userFromUID},#{userToUID},#{createTime});
+    	update "user" set following=following+1 where id=#{userFromUID};
+    	update "user" set follower=follower+1 where id=#{userToUID}
+    </insert>
+    
+    <delete id="delete">
+    	delete from "user_attention" where user_from_uid = #{userFromUID} and user_to_uid = #{userToUID};
+    	update "user" set following=following-1 where id=#{userFromUID};
+    	update "user" set follower=follower-1 where id=#{userToUID}
+    </delete>
+    
+    <select id="countAttent" resultType="_int">
+    	select count(1) from "user_attention"
+    	<where>
+             <if test="userFromUID != null and userFromUID != ''">
+                 user_from_uid=#{userFromUID} 
+             </if>
+         </where>
+    </select>
+    
+    <select id="countFans" resultType="_int">
+    	select count(1) from "user_attention"
+    	<where>
+             <if test="userToUID != null and userToUID != ''">
+                 user_to_uid=#{userToUID} 
+             </if>
+         </where>
+    </select>
+    
+    <select id="isAttent" resultType="_int">
+    	select count(1) from "user_attention"
+    	<where>
+             <if test="userToUID != null and userToUID != ''">
+                 user_to_uid=#{userToUID}
+             </if>
+             <if test="userFromUID != null and userFromUID != ''">
+                and user_from_uid=#{userFromUID} 
+             </if>
+         </where>
+    </select>
+    
+    <select id="isBlack" resultType="_int">
+    	select count(1) from "user_blacklist"
+    	<where>
+             <if test="userToUID != null and userToUID != ''">
+                 user_to_uid=#{userToUID}
+             </if>
+             <if test="userFromUID != null and userFromUID != ''">
+                and user_from_uid=#{userFromUID} 
+             </if>
+         </where>
+    </select>
+    
+    <select id="queryBlackList" resultType="java.util.HashMap">
+        select 
+        user_to_uid as "userToUID",
+        user_from_uid as "userFromUID"
+        from "user_blacklist"
+        <where>
+             <foreach item="item" index="index" collection="list" open=" " separator=" OR " close=" ">
+                ( user_from_uid = #{item.userFromUID} AND user_to_uid = #{item.userToUID} )
+            </foreach>
+         </where>
+    </select>
+    <select id="queryPageAttent" resultMap="userMap">
+        select u.avatars ,u.nick_name as nickName ,u.gender ,u.intro ,ua.user_to_uid userToUID,
+             case when ut."id">0 then 1 else 0 end as both_attend_flag, u."level"
+        from "user" u join user_attention ua  on u.id=ua.user_to_uid
+           left join user_attention ut on ua.user_from_uid=ut.user_to_uid and ua.user_to_uid=ut.user_from_uid
+	    where ua.user_from_uid=#{params.userFromUID}
+	    order by ua.id  
+    </select>
+    
+     <select id="queryPageFans" resultMap="userMap">
+        select u.avatars ,u.nick_name as nickName ,u.gender ,u.intro ,ua.user_from_uid userFromUID,
+             case when ut."id">0 then 1 else 0 end as both_attend_flag, u."level"
+        from "user" u join user_attention ua  on u.id=ua.user_from_uid
+           left join user_attention ut on ua.user_from_uid=ut.user_to_uid and ua.user_to_uid=ut.user_from_uid
+			where ua.user_to_uid=#{params.userToUID} 
+		order by ua.id 	
+    </select>
+    
+    <insert id="saveBlackList" useGeneratedKeys="true" keyProperty="id" parameterType="UserAttention">
+    	insert into "user_blacklist"(user_from_uid,user_to_uid,create_time) 
+    	           values (#{userFromUID},#{userToUID},#{createTime});
+    	delete from "user_attention" where user_from_uid=#{userFromUID} and user_to_uid=#{userToUID};
+    	delete from "user_attention" where user_to_uid=#{userFromUID} and user_from_uid=#{userToUID};
+    	update "user" set following=following-1 where id=#{userFromUID};
+    	update "user" set follower=follower-1 where id=#{userToUID}
+    </insert>
+    
+    <delete id="deleteBlackList">
+    	delete from "user_blacklist" where user_from_uid = #{userFromUID} and user_to_uid = #{userToUID}
+    </delete>
+    
+<!-- 
+    <update id="update" parameterType="UserAttention">
+        update "user_attention"
+        <set>
+            <if test="flag != null">
+                flag = #{flag}
+            </if>
+        </set>
+        <where>
+            user_to_uid=#{userToUID} and user_from_uid=#{userFromUID}
+        </where>
+    </update>
+ -->    
+    
+    <select id="queryPageBlacks" resultMap="userMap">
+        select u.avatars as avatars,u.nick_name as nickName,u.gender as gender,u.intro as intro,ua.user_to_uid userToUID 
+           from "user" u join "user_blacklist" ua  on u.id=ua.user_to_uid
+			where ua.user_from_uid=#{params.userFromUID} 
+		order by ua.id	
+    </select>
+    
+    <select id="queryPageFansAndLanguage" resultType="java.util.HashMap">
+        select ut.user_to_uid user_id, ut.user_from_uid fans_id, ud.localized_model "language"
+     from user_attention ut LEFT JOIN user_device_info ud on ut.user_from_uid = ud.user_id          
+				where ut.user_to_uid=#{params.userToUID}
+    </select>
+    
+    <select id="queryPageFollowingAndFollower" resultType="java.util.HashMap">
+   
+       select id,nick_Name,avatars from "user" u where id in (  
+          select user_to_uid as uid from user_attention ut where ut.user_from_uid=#{params.userToUID}
+            UNION  
+          select user_from_uid as uid from user_attention ut where ut.user_to_uid=#{params.userToUID}
+       ) 
+       
+       order by id asc
+       
+    </select>
+    
+    <select id="queryUnfollowedHosts" resultType="java.util.HashMap">
+     select id,avatars ,nick_name as "nickName", intro,gender,"level"
+      from "user" u 
+     where u.role &amp; 1 > 0 and id != #{userId}   
+       and not exists ( select 1 from user_attention ut where user_from_uid=#{userId} and user_to_uid=u.id )
+       and not exists ( select 1 from user_blacklist ub where user_from_uid=#{userId} and user_to_uid=u.id )
+       and not exists ( select 1 from user_blacklist ub where user_to_uid=#{userId} and user_from_uid=u.id )
+     limit 100 offset 0
+   </select>
+    
+    <select id="queryFollowStatus" resultType="java.util.HashMap">    
+      select ua.user_to_uid user_id,
+        case when ut."id">0 then 'mutualFollowed' else 'followed' end as follow_status
+      from user_attention ua 
+        left join user_attention ut on ua.user_from_uid=ut.user_to_uid and ua.user_to_uid=ut.user_from_uid
+      where ua.user_from_uid=${userId} and ua.user_to_uid in (${userIds})
+   </select>
+    
+</mapper>
